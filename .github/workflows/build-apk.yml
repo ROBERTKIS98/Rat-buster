@@ -25,7 +25,8 @@ jobs:
           python tools/generate_sounds.py
 
       - name: Build APK with Buildozer
-        uses: ArtemSBulgakov/buildozer-action@v1
+        uses: ArtemSBulgakov/buildozer-action@v1.4.4
+
         id: buildozer
         with:
           command: buildozer android debug
