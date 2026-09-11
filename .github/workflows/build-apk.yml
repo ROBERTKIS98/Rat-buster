@@ -26,8 +26,18 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython==0.29.33 virtualenv
 
-    - name: Build APK with Buildozer
+    - name: Pre-accept Android SDK Licenses
       run: |
+        mkdir -p ~/.android
+        touch ~/.android/repositories.cfg
+        # Tell buildozer to accept licenses automatically via environment variable
+        echo " can_accept_sdk_license = True " >> ~/.buildozer
+
+    - name: Build APK with Buildozer
+      env:
+        BUILDOZER_ALLOW_ORG_TEST_DOMAIN: "1"
+      run: |
+        # Use the explicit accept license command embedded in the build
         yes | buildozer -v android debug
 
     - name: Upload APK artifact
