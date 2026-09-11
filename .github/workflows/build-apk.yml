@@ -7,7 +7,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout=v4
 
     - name: Set up Python
       uses: actions/setup-python@v5
@@ -26,13 +26,13 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython==0.29.33 virtualenv
 
-    - name: Setup Android SDK and Accept Licenses
-      uses: android-actions/setup-android@v3
-
     - name: Build APK with Buildozer
       env:
         BUILDOZER_ALLOW_ORG_TEST_DOMAIN: "1"
+        # Force Java 17 compatibility environment flags
+        JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
       run: |
+        # Use Buildozer's built-in automated flag to force accept all SDK licensing agreements directly
         yes | buildozer -v android debug
 
     - name: Upload APK artifact
