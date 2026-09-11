@@ -26,15 +26,8 @@ jobs:
         pip install --upgrade pip
         pip install buildozer cython==0.29.33 virtualenv
 
-    - name: Force Accept Android SDK Licenses
-      run: |
-        # Pre-create the license directory structure Buildozer looks for
-        mkdir -p ~/.buildozer/android/platform/android-sdk/licenses
-        
-        # Inject the official accepted hash signatures for standard Android SDK licenses
-        echo -e "\n24ac74004990610d4e5585b30b457816d81341c2" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-license
-        echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > ~/.buildozer/android/platform/android-sdk/licenses/android-sdk-preview-license
-        echo -e "\nd965a79e5784cc1ee54ce326a22a92e446fa9115" > ~/.buildozer/android/platform/android-sdk/licenses/android-googletv-license
+    - name: Setup Android SDK and Accept Licenses
+      uses: android-actions/setup-android@v3
 
     - name: Build APK with Buildozer
       env:
@@ -47,7 +40,3 @@ jobs:
       with:
         name: game-apk
         path: bin/*.apk
-
-
-
-
