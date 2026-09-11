@@ -28,16 +28,16 @@ jobs:
 
     - name: Pre-accept Android SDK Licenses
       run: |
-        mkdir -p ~/.android
-        touch ~/.android/repositories.cfg
-        # Tell buildozer to accept licenses automatically via environment variable
-        echo " can_accept_sdk_license = True " >> ~/.buildozer
+        # Setup the global directory correctly
+        mkdir -p ~/.buildozer
+        # This forces the build tool to auto-accept licenses without needing a terminal interactive prompt
+        echo "[app]" > ~/.buildozer/config
+        echo "android.accept_sdk_license = True" >> ~/.buildozer/config
 
     - name: Build APK with Buildozer
       env:
         BUILDOZER_ALLOW_ORG_TEST_DOMAIN: "1"
       run: |
-        # Use the explicit accept license command embedded in the build
         yes | buildozer -v android debug
 
     - name: Upload APK artifact
@@ -45,5 +45,6 @@ jobs:
       with:
         name: game-apk
         path: bin/*.apk
+
 
 
