@@ -30,8 +30,13 @@ jobs:
       env:
         BUILDOZER_ALLOW_ORG_TEST_DOMAIN: "1"
         JAVA_HOME: /usr/lib/jvm/java-17-openjdk-amd64
+        # Force the environment to accept the licenses globally
+        BUILDOZER_WARN_ON_ROOT: "0"
       run: |
-        yes | buildozer -v android debug
+        # Generate a dummy buildozer config globally to trick the license prompt into passing instantly
+        mkdir -p ~/.buildozer
+        echo -e "[app]\nandroid.accept_sdk_license = True" > ~/.buildozer/config
+        buildozer -v android debug
 
     - name: Upload APK artifact
       uses: actions/upload-artifact@v4
